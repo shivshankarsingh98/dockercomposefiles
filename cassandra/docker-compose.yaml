@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+  cassandra:
+    image: cassandra
+    hostname: my-cassandra
+    restart: always
+    ports:
+      - 9042:9042
+      - 9160:9160
+      - 7000:7000
+    networks:
+            vpcbr:
+                ipv4_address: 172.20.0.2
+    environment:
+      JMX_PORT: 7199
+      JVM_OPTS: "-Xms256m -Xmx6144m -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.port=7199 -Dcom.sun.management.jmxremote.rmi.port=7199 -Djava.rmi.server.hostname=172.20.0.2"
+ 
+
+networks:
+    vpcbr:
+        driver: bridge
+        ipam:
+          config:
+            - subnet: 172.20.0.0/16
+

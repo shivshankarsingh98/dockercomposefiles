@@ -1,0 +1,10 @@
+version: "3.1"
+services:
+  ceph:
+    image: ceph/daemon:tag-build-master-kraken-ubuntu-16.04
+    container_name: ceph
+    restart: always
+    ports:
+      - 6800:6800
+
+

@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+  zoo1:
+    image: zookeeper
+    restart: always
+    hostname: zoo1
+    ports:
+      - 2181:2181
+    networks:
+            vpcbr:
+                ipv4_address: 172.27.0.9
+    environment:
+      JMX_PORT: 5199
+      JAVA_TOOL_OPTIONS: "-Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=5199 -Dcom.sun.management.jmxremote.rmi.port=5199 -Djava.rmi.server.hostname=172.27.0.9"
+
+   
+networks:
+    vpcbr:
+        driver: bridge
+        ipam:
+          config:
+            - subnet: 172.27.0.0/16

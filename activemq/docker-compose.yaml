@@ -1,0 +1,29 @@
+version: "3.1"
+
+services:
+
+  activemq:
+    image: webcenter/activemq:5.14.3
+    container_name: activemq
+    ports:
+      - 61616:61616
+    networks:
+            vpcbr:
+                ipv4_address: 172.19.0.2
+    volumes: ["activemq-data:/opt/activemq/conf", "activemq-data:/data/activemq", "activemq-data:/var/log/activemq"]
+    environment:
+      JMX_PORT: 1099
+      ACTIVEMQ_OPTS: "-Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.rmi.port=1099 -Djava.rmi.server.hostname=172.19.0.2"
+
+
+volumes:
+  activemq-data: {}
+
+
+networks:
+    vpcbr:
+        driver: bridge
+        ipam:
+          config:
+            - subnet: 172.19.0.0/16
+

@@ -1,0 +1,22 @@
+version: '3.1'
+services:
+  websphere:
+    image: websphere-liberty
+    container_name: websphere
+    restart: always
+    ports:
+      - 9043:9043
+      - 9060:9060
+    networks:
+            vpcbr:
+                ipv4_address: 172.12.0.2
+    environment:
+      JMX_PORT: 7199
+      JAVA_TOOL_OPTIONS: "-Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=7199 -Dcom.sun.management.jmxremote.rmi.port=7199 -Djava.rmi.server.hostname=172.12.0.2"
+
+networks:
+    vpcbr:
+        driver: bridge
+        ipam:
+          config:
+            - subnet: 172.12.0.0/16

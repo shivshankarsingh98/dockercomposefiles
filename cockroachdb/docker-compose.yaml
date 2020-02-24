@@ -1,0 +1,39 @@
+version: "3"
+services:
+  roach1:
+    container_name: cockroach1
+    image: cockroachdb/cockroach:v1.1.3
+    command: start --insecure
+    ports:
+      - "26257"
+      - "8080"
+    networks:
+      roachnet:
+        aliases:
+          - roach1
+
+  roach2:
+    container_name: cockroach2
+    image: cockroachdb/cockroach:v1.1.3
+    command: start --insecure --join=roach1
+    depends_on:
+      - roach1
+    networks:
+      roachnet:
+        aliases:
+          - roach2
+
+  roach3:
+    container_name: cockroach3
+    image: cockroachdb/cockroach:v1.1.3
+    command: start --insecure --join=roach1
+    depends_on:
+      - roach1
+    networks:
+      roachnet:
+        aliases:
+          - roach3
+
+networks:
+  roachnet:
+    driver: bridge

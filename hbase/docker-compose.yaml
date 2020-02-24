@@ -1,0 +1,29 @@
+version: "3.1"
+
+services:
+  hbase:
+    image: aaionap/hbase
+    container_name: hbase
+    volumes:
+      - hbase_data:/hbase-data
+      - hbase_zookeeper_data:/zookeeper-data
+    ports:
+      - 60010:60010
+    networks:
+            vpcbr:
+                ipv4_address: 172.21.0.2
+    environment:
+      JMX_PORT: 7199
+      HBASE_MASTER_OPTS: "-Xms256m -Xmx6144m -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.port=7199 -Dcom.sun.management.jmxremote.rmi.port=7199 -Djava.rmi.server.hostname=172.21.0.2"
+
+
+volumes:
+  hbase_data:
+  hbase_zookeeper_data:
+
+networks:
+    vpcbr:
+        driver: bridge
+        ipam:
+          config:
+            - subnet: 172.21.0.0/16
